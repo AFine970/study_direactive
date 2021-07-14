@@ -1,0 +1,17 @@
+{
+  "name": "study_direactive",
+  "version": "1.0.0",
+  "description": "Vue指令学习",
+  "main": "webpack.config.js",
+  "scripts": {
+    "serve": "webpack-dev-server"
+  },
+  "keywords": [],
+  "author": "cunahang_wwei",
+  "license": "ISC",
+  "devDependencies": {
+    "webpack": "^5.44.0",
+    "webpack-cli": "^3.3.12",
+    "webpack-dev-server": "^3.11.2"
+  }
+}
