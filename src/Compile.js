@@ -1,9 +1,10 @@
 /*
  * @Date: 2021-07-14 12:04:04
  * @LastEditors: cunhang_wwei
- * @LastEditTime: 2021-07-15 09:28:27
+ * @LastEditTime: 2021-07-22 10:02:50
  * @Description: 模板编译
  */
+import Watch from './Observer/Watch';
 export default class Compile {
     constructor(el, vue) {
         // vue实例
@@ -15,6 +16,8 @@ export default class Compile {
             let $fragment = this.node2Fragment(this.$el)
             // 编译
             this.compile($fragment)
+            // 替换好的内容需要上树
+            this.$el.appendChild($fragment)
         }
     }
 
@@ -35,11 +38,16 @@ export default class Compile {
         // 得到子元素
         const childNodes = el.childNodes
 
+        
+
         childNodes.forEach(node => {
+            const text = node.textContent
             if (node.nodeType === 1) {
                 this.compileElement(node)
             } else if (node.nodeType === 3) {
-
+                // const name = regx.exec(text)[1]
+                this.compileText(node, text)
+                // console.log(node, text)
             }
         })
     }
@@ -54,10 +62,22 @@ export default class Compile {
             const value = attr.value
             
             if (attrName.indexOf('v-') === 0) {
-                console.log('找到指令了')
+                // console.log('找到指令了')
                 switch (attrName) {
                     case 'v-model':
-                        console.log('value', value)
+                        new Watch(this.$vue, value, value => {
+                            node.value = value
+                        })
+
+                        let v = this.getVueVal(this.$vue, value)
+                        node.value = v
+
+                        node.addEventListener('input', e => {
+                            const newVal = e.target.value
+                            
+                            this.setVueVal(this.$vue, value, newVal)
+                            v = newVal
+                        })
                         break
                     case 'v-if':
                         // TODO
@@ -75,7 +95,39 @@ export default class Compile {
         }
     }
 
-    compileText() {
+    compileText(node, text) {
+        const nameRegx = /\{\{(.*)\}\}/
+        const expRegx = /(\{\{.*\}\})/
+        if (nameRegx.test(text)) {
+            const name = nameRegx.exec(text)[1]
+            const exp = expRegx.exec(text)[1]
+            node.textContent = text.replace(exp, this.getVueVal(this.$vue, name))
+            new Watch(this.$vue, name, value => {
+                node.textContent = text.replace(exp, value)
+            })
+        }
+    }
 
+    getVueVal(vue, exp) {
+        let val = vue
+        if (typeof exp !== 'string' || !exp) return
+        const exps = exp.split('.')
+        exps.forEach(key => {
+            val = val[key]
+        })
+        return val
+    }
+    
+    setVueVal(vue, exp, value) {
+        let val = vue
+        if (typeof exp !== 'string' || !exp) return
+        const exps = exp.split('.')
+        exps.forEach((key, index) => {
+            if (index < exps.length - 1) {
+                val = val[key]
+            } else {
+                val[key] = value
+            }
+        })
     }
 }

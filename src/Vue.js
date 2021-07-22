@@ -1,7 +1,7 @@
 /*
  * @Date: 2021-07-14 12:03:10
  * @LastEditors: cunhang_wwei
- * @LastEditTime: 2021-07-14 21:21:01
+ * @LastEditTime: 2021-07-20 19:43:13
  * @Description: 迷你的Vue
  */
 import Compile from './Compile'
@@ -39,6 +39,7 @@ export default class Vue {
     }
 
     _initWatch() {
+        // 拿到vue实例的watch属性
         let watch = this.$options.watch
         for (const key in watch) {
             if (Object.hasOwnProperty.call(watch, key)) {

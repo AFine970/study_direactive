@@ -2,7 +2,7 @@ let uid = 0
 export default class Dep {
     constructor() {
         this.id = uid++
-        console.log('我是DEP类的构造器')
+        // console.log('我是DEP类的构造器')
         // 创建一个数组存储自己的订阅者
         // 这个数组里存放的是Watcher的实例
         this.subs = []
@@ -23,7 +23,7 @@ export default class Dep {
 
     // 通知更新
     notify() {
-        console.log('触发notify')
+        // console.log('触发notify')
         // 浅拷贝一份
         const subs = this.subs.slice()
 

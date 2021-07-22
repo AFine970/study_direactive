@@ -5,13 +5,16 @@
     </head>
     <body>
         <div id="app">
-            <h1 class="title" v-model="name">你好</h1>
+            你好{{b.m.n}}
+            <br/>
+            <input type="text" v-model="b.m.n"></input>
             <ul class="list">
-                <li v-model="aaa">A</li>
+                <li>A</li>
                 <li>B</li>
                 <li>C</li>
             </ul>
         </div>
     </body>
+    <button onclick="handleClick()">按我加一</button>
     <script src="/bundle.js" type="text/javascript"></script>
 </html>

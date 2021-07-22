@@ -24,7 +24,7 @@ export default function (data, key, value) {
         configurable: true,
         // getter
         get() {
-            console.log('你试图访问' + key + '属性');
+            // console.log('你试图访问' + key + '属性');
             // getter里收集依赖，判断现在是否处于依赖收集阶段
             if (Dep.target) {
                 dep.depend()
@@ -36,7 +36,7 @@ export default function (data, key, value) {
         },
         // setter
         set(newValue) {
-            console.log('你试图修改' + key + '属性', newValue);
+            // console.log('你试图修改' + key + '属性', newValue);
             // 相同，则不处理
             if (value === newValue) return
 
